@@ -54,20 +54,20 @@
     <ClInclude Include="include\poly2tri\poly2tri.h">
       <Filter>Header Files\include\poly2tri</Filter>
     </ClInclude>
-    <ClInclude Include="sweep\sweep_context.h">
-      <Filter>Header Files\include\poly2tri\sweep</Filter>
-    </ClInclude>
-    <ClInclude Include="sweep\sweep.h">
-      <Filter>Header Files\include\poly2tri\sweep</Filter>
-    </ClInclude>
-    <ClInclude Include="sweep\cdt.h">
-      <Filter>Header Files\include\poly2tri\sweep</Filter>
-    </ClInclude>
-    <ClInclude Include="sweep\advancing_front.h">
-      <Filter>Header Files\include\poly2tri\sweep</Filter>
-    </ClInclude>
     <ClInclude Include="common\utils.h">
       <Filter>Header Files\include\poly2tri</Filter>
+    </ClInclude>
+    <ClInclude Include="include\poly2tri\sweep\advancing_front.h">
+      <Filter>Header Files\include\poly2tri\sweep</Filter>
+    </ClInclude>
+    <ClInclude Include="include\poly2tri\sweep\cdt.h">
+      <Filter>Header Files\include\poly2tri\sweep</Filter>
+    </ClInclude>
+    <ClInclude Include="include\poly2tri\sweep\sweep.h">
+      <Filter>Header Files\include\poly2tri\sweep</Filter>
+    </ClInclude>
+    <ClInclude Include="include\poly2tri\sweep\sweep_context.h">
+      <Filter>Header Files\include\poly2tri\sweep</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
