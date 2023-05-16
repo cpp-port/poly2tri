@@ -32,6 +32,18 @@
 #ifndef POLY2TRI_H
 #define POLY2TRI_H
 
+
+#ifdef _output_type_static
+#define POLY2TRI_CLASS_DECL
+#else
+#  pragma warning(disable : 4251) // warning C4251: class X needs to have dll-interface to be used by clients of class Y
+#ifdef _poly2tri_project
+#define POLY2TRI_CLASS_DECL __declspec(dllexport)
+#else
+#define POLY2TRI_CLASS_DECL __declspec(dllimport)
+#endif
+#endif
+
 #include "common/shapes.h"
 #include "sweep/cdt.h"
 
