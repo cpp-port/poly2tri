@@ -32,7 +32,7 @@
 #ifndef POLY2TRI_H
 #define POLY2TRI_H
 
-#ifdef WINDOWS
+#ifdef WIN32
 #ifdef _output_type_static
 #define POLY2TRI_CLASS_DECL
 #else // !_output_type_static
