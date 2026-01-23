@@ -1,6 +1,6 @@
 /*
- * Poly2Tri Copyright (c) 2009-2010, Poly2Tri Contributors
- * http://code.google.com/p/poly2tri/
+ * Poly2Tri Copyright (c) 2009-2018, Poly2Tri Contributors
+ * https://github.com/jhasse/poly2tri
  *
  * All rights reserved.
  *
@@ -28,7 +28,9 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#include "poly2tri/sweep/advancing_front.h"
+#include "advancing_front.h"
+
+#include <cassert>
 
 namespace p2t {
 
@@ -44,21 +46,21 @@ Node* AdvancingFront::LocateNode(double x)
   Node* node = search_node_;
 
   if (x < node->value) {
-    while ((node = node->prev) != NULL) {
+    while ((node = node->prev) != nullptr) {
       if (x >= node->value) {
         search_node_ = node;
         return node;
       }
     }
   } else {
-    while ((node = node->next) != NULL) {
+    while ((node = node->next) != nullptr) {
       if (x < node->value) {
         search_node_ = node->prev;
         return node->prev;
       }
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 Node* AdvancingFront::FindSearchNode(double x)
@@ -86,13 +88,13 @@ Node* AdvancingFront::LocatePoint(const Point* point)
       }
     }
   } else if (px < nx) {
-    while ((node = node->prev) != NULL) {
+    while ((node = node->prev) != nullptr) {
       if (point == node->point) {
         break;
       }
     }
   } else {
-    while ((node = node->next) != NULL) {
+    while ((node = node->next) != nullptr) {
       if (point == node->point)
         break;
     }
@@ -105,4 +107,4 @@ AdvancingFront::~AdvancingFront()
 {
 }
 
-}
+} // namespace p2t

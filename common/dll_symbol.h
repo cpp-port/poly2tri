@@ -1,5 +1,5 @@
 /*
- * Poly2Tri Copyright (c) 2009-2021, Poly2Tri Contributors
+ * Poly2Tri Copyright (c) 2009-2022, Poly2Tri Contributors
  * https://github.com/jhasse/poly2tri
  *
  * All rights reserved.
@@ -28,44 +28,34 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#include "cdt.h"
 
-namespace p2t {
+#pragma once
 
-CDT::CDT(const std::vector<Point*>& polyline)
-{
-  sweep_context_ = new SweepContext(polyline);
-  sweep_ = new Sweep;
-}
+#if defined(_MSC_VER)
+#  pragma warning( disable: 4273)
+#  define P2T_COMPILER_DLLEXPORT __declspec(dllexport)
+#  define P2T_COMPILER_DLLIMPORT __declspec(dllimport)
+#elif defined(__GNUC__)
+#  define P2T_COMPILER_DLLEXPORT __attribute__ ((visibility ("default")))
+#  define P2T_COMPILER_DLLIMPORT __attribute__ ((visibility ("default")))
+#else
+#  define P2T_COMPILER_DLLEXPORT
+#  define P2T_COMPILER_DLLIMPORT
+#endif
 
-void CDT::AddHole(const std::vector<Point*>& polyline)
-{
-  sweep_context_->AddHole(polyline);
-}
+// We need to enable shard linkage explicitely
+#ifdef ASSIMP_BUILD_DLL_EXPORT
+#  define P2T_SHARED_EXPORTS 1
+#endif
 
-void CDT::AddPoint(Point* point) {
-  sweep_context_->AddPoint(point);
-}
-
-void CDT::Triangulate()
-{
-  sweep_->Triangulate(*sweep_context_);
-}
-
-std::vector<p2t::Triangle*> CDT::GetTriangles()
-{
-  return sweep_context_->GetTriangles();
-}
-
-std::list<p2t::Triangle*> CDT::GetMap()
-{
-  return sweep_context_->GetMap();
-}
-
-CDT::~CDT()
-{
-  delete sweep_context_;
-  delete sweep_;
-}
-
-} // namespace p2t
+#ifndef P2T_DLL_SYMBOL
+#  if defined(P2T_STATIC_EXPORTS)
+#    define P2T_DLL_SYMBOL
+#  elif defined(P2T_SHARED_EXPORTS)
+#    define P2T_DLL_SYMBOL P2T_COMPILER_DLLEXPORT
+#  elif defined(BUILD_SHARED_LIBS)
+#    define P2T_DLL_SYMBOL P2T_COMPILER_DLLIMPORT
+#  else
+#    define P2T_DLL_SYMBOL
+#  endif
+#endif

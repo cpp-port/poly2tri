@@ -1,5 +1,5 @@
 /*
- * Poly2Tri Copyright (c) 2009-2021, Poly2Tri Contributors
+ * Poly2Tri Copyright (c) 2009-2018, Poly2Tri Contributors
  * https://github.com/jhasse/poly2tri
  *
  * All rights reserved.
@@ -28,44 +28,88 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#include "cdt.h"
+
+#pragma once
+
+#include "../common/shapes.h"
 
 namespace p2t {
 
-CDT::CDT(const std::vector<Point*>& polyline)
+struct Node;
+
+// Advancing front node
+struct Node {
+  Point* point;
+  Triangle* triangle;
+
+  Node* next;
+  Node* prev;
+
+  double value;
+
+  Node(Point& p) : point(&p), triangle(NULL), next(NULL), prev(NULL), value(p.x)
+  {
+  }
+
+  Node(Point& p, Triangle& t) : point(&p), triangle(&t), next(NULL), prev(NULL), value(p.x)
+  {
+  }
+
+};
+
+// Advancing front
+class AdvancingFront {
+public:
+
+AdvancingFront(Node& head, Node& tail);
+// Destructor
+~AdvancingFront();
+
+Node* head();
+void set_head(Node* node);
+Node* tail();
+void set_tail(Node* node);
+Node* search();
+void set_search(Node* node);
+
+/// Locate insertion point along advancing front
+Node* LocateNode(double x);
+
+Node* LocatePoint(const Point* point);
+
+private:
+
+Node* head_, *tail_, *search_node_;
+
+Node* FindSearchNode(double x);
+};
+
+inline Node* AdvancingFront::head()
 {
-  sweep_context_ = new SweepContext(polyline);
-  sweep_ = new Sweep;
+  return head_;
 }
-
-void CDT::AddHole(const std::vector<Point*>& polyline)
+inline void AdvancingFront::set_head(Node* node)
 {
-  sweep_context_->AddHole(polyline);
+  head_ = node;
 }
 
-void CDT::AddPoint(Point* point) {
-  sweep_context_->AddPoint(point);
-}
-
-void CDT::Triangulate()
+inline Node* AdvancingFront::tail()
 {
-  sweep_->Triangulate(*sweep_context_);
+  return tail_;
 }
-
-std::vector<p2t::Triangle*> CDT::GetTriangles()
+inline void AdvancingFront::set_tail(Node* node)
 {
-  return sweep_context_->GetTriangles();
+  tail_ = node;
 }
 
-std::list<p2t::Triangle*> CDT::GetMap()
+inline Node* AdvancingFront::search()
 {
-  return sweep_context_->GetMap();
+  return search_node_;
 }
 
-CDT::~CDT()
+inline void AdvancingFront::set_search(Node* node)
 {
-  delete sweep_context_;
-  delete sweep_;
+  search_node_ = node;
 }
 
-} // namespace p2t
+}
